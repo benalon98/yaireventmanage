@@ -1,4 +1,10 @@
-const TableThree = ({ registrations }) => {
+interface Registration {
+  fullName: string;
+  numberOfPeople: number;
+  // Add other properties if necessary
+}
+
+const TableThree = ({ registrations }: { registrations: Registration[] }) => {
   return (
     <div className="rounded-sm border rtl text-right border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
@@ -17,7 +23,7 @@ const TableThree = ({ registrations }) => {
             </tr>
           </thead>
           <tbody>
-            {registrations.map((registration, key) => (
+            {registrations.map((registration: any, key: any) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">

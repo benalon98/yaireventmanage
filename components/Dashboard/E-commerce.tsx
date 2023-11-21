@@ -18,15 +18,20 @@ import { collection, getDocs } from "firebase/firestore";
 const MapOne = dynamic(() => import("../Maps/MapOne"), {
   ssr: false,
 });
+interface Registration {
+  fullName: string;
+  numberOfPeople: number;
+  // Add other properties if necessary
+}
 
 const ECommerce: React.FC = () => {
-  const [registrations, setRegistrations] = useState([]);
-  const [totalPepole, setTotalPepole] = useState();
+  const [registrations, setRegistrations] = useState<Registration[]>([]);
+  const [totalPepole, setTotalPepole] = useState(Number);
 
   const getRegistrations = async () => {
     const q = collection(db, "registrations");
     const querySnapshot = await getDocs(q);
-    const registrationData = [];
+    const registrationData: any = [];
     querySnapshot.forEach((doc) => {
       registrationData.push(doc.data());
     });
@@ -36,22 +41,24 @@ const ECommerce: React.FC = () => {
   useEffect(() => {
     getRegistrations();
   }, []);
+
   useEffect(() => {
-    let totalAproved = 0;
+    let totalApproved = 0;
     registrations.forEach((registration) => {
-      totalAproved +=
+      totalApproved +=
         Number(registration.numberOfPeople) > 10
           ? 1
           : Number(registration.numberOfPeople);
     });
 
-    setTotalPepole(totalAproved);
+    setTotalPepole(totalApproved);
   }, [registrations]);
 
   return (
     <>
       <div className="grid rtl grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats
+          rate=""
           title="סכום הכנסה משוער (300 ש״ח לאדם)"
           total={`₪${totalPepole * 300}`}
         >
@@ -74,7 +81,7 @@ const ECommerce: React.FC = () => {
           </svg>
         </CardDataStats>
 
-        <CardDataStats title="סה״כ אישרו" total={totalPepole}>
+        <CardDataStats rate="" title="סה״כ אישרו" total={`${totalPepole}`}>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
